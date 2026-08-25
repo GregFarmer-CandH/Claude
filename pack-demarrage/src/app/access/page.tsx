@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Image from "next/image";
 import { AccessRequestForm } from "./access-request-form";
 
 const ERROR_MESSAGES: Record<string, string> = {
@@ -17,6 +18,13 @@ export default async function AccessPage({
 
   return (
     <main className="mx-auto flex min-h-full w-full max-w-sm flex-1 flex-col justify-center px-6 py-16">
+      <Image
+        src="/logo-farmer-crossfit.png"
+        alt="Farmer CrossFit"
+        width={200}
+        height={80}
+        className="mb-6 h-auto w-40"
+      />
       <h1 className="text-xl font-semibold tracking-tight">Accéder à mon espace</h1>
       <p className="mt-1 text-sm text-stone-500">
         Pack Démarrage Farmer CrossFit — saisissez l&apos;email utilisé lors de votre inscription,

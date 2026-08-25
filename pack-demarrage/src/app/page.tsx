@@ -1,11 +1,19 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="flex flex-1 flex-col items-center justify-center gap-8 px-6 py-16 text-center">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Pack Démarrage</h1>
-        <p className="mt-1 text-stone-500">Farmer CrossFit</p>
+        <Image
+          src="/logo-farmer-crossfit.png"
+          alt="Farmer CrossFit"
+          width={280}
+          height={112}
+          priority
+          className="mx-auto h-auto w-56"
+        />
+        <h1 className="mt-4 text-2xl font-semibold tracking-tight">Pack Démarrage</h1>
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row">

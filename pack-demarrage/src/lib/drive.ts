@@ -1,4 +1,4 @@
-import { google } from "googleapis";
+import { google, drive_v3 } from "googleapis";
 
 export type DriveFile = {
   id: string;
@@ -9,7 +9,12 @@ export type DriveFile = {
   thumbnailLink: string | null;
   modifiedTime: string | null;
   sizeBytes: string | null;
+  /** Nom du sous-dossier d'origine (ex: "Vidéos apprentissage des mouvements"), ou null à la racine. */
+  folder: string | null;
 };
+
+const FOLDER_MIME = "application/vnd.google-apps.folder";
+const MAX_DEPTH = 3;
 
 function classify(mimeType: string): DriveFile["kind"] {
   if (mimeType === "application/pdf") return "pdf";
@@ -34,36 +39,62 @@ function getAuth() {
   });
 }
 
-/**
- * Liste les fichiers PDF et vidéo du dossier Drive partagé "Pack Démarrage".
- * Le compte de service doit avoir un accès lecteur sur GOOGLE_DRIVE_FOLDER_ID
- * (partage direct du dossier, ou appartenance à un Drive partagé).
- */
-export async function listPackDemarrageFiles(): Promise<DriveFile[]> {
-  const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
-  if (!folderId) {
-    throw new Error("GOOGLE_DRIVE_FOLDER_ID manquant dans les variables d'environnement.");
-  }
-
-  const drive = google.drive({ version: "v3", auth: getAuth() });
-
+async function listChildren(drive: drive_v3.Drive, folderId: string) {
   const res = await drive.files.list({
-    q: `'${folderId}' in parents and trashed = false and (mimeType = 'application/pdf' or mimeType contains 'video/')`,
+    q: `'${folderId}' in parents and trashed = false`,
     fields: "files(id, name, mimeType, webViewLink, thumbnailLink, modifiedTime, size)",
-    orderBy: "name_natural",
+    orderBy: "folder,name_natural",
     pageSize: 200,
     supportsAllDrives: true,
     includeItemsFromAllDrives: true,
   });
+  return res.data.files ?? [];
+}
 
-  return (res.data.files ?? []).map((f) => ({
-    id: f.id!,
-    name: f.name ?? "Sans titre",
-    mimeType: f.mimeType ?? "",
-    kind: classify(f.mimeType ?? ""),
-    webViewLink: f.webViewLink ?? null,
-    thumbnailLink: f.thumbnailLink ?? null,
-    modifiedTime: f.modifiedTime ?? null,
-    sizeBytes: f.size ?? null,
-  }));
+/**
+ * Liste les PDF et vidéos du dossier Drive partagé "Pack Démarrage", en
+ * parcourant aussi les sous-dossiers (ex: "Vidéos apprentissage des
+ * mouvements") jusqu'à MAX_DEPTH niveaux. Le compte de service doit avoir
+ * un accès lecteur sur GOOGLE_DRIVE_FOLDER_ID (partage direct du dossier,
+ * ou appartenance à un Drive partagé).
+ */
+export async function listPackDemarrageFiles(): Promise<DriveFile[]> {
+  const rootFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
+  if (!rootFolderId) {
+    throw new Error("GOOGLE_DRIVE_FOLDER_ID manquant dans les variables d'environnement.");
+  }
+
+  const drive = google.drive({ version: "v3", auth: getAuth() });
+  const results: DriveFile[] = [];
+
+  async function walk(folderId: string, folderLabel: string | null, depth: number) {
+    const children = await listChildren(drive, folderId);
+
+    for (const f of children) {
+      if (f.mimeType === FOLDER_MIME) {
+        if (depth < MAX_DEPTH && f.id) {
+          await walk(f.id, f.name ?? folderLabel, depth + 1);
+        }
+        continue;
+      }
+
+      const kind = classify(f.mimeType ?? "");
+      if (kind === "other") continue;
+
+      results.push({
+        id: f.id!,
+        name: f.name ?? "Sans titre",
+        mimeType: f.mimeType ?? "",
+        kind,
+        webViewLink: f.webViewLink ?? null,
+        thumbnailLink: f.thumbnailLink ?? null,
+        modifiedTime: f.modifiedTime ?? null,
+        sizeBytes: f.size ?? null,
+        folder: folderLabel,
+      });
+    }
+  }
+
+  await walk(rootFolderId, null, 0);
+  return results;
 }

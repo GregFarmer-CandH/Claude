@@ -60,10 +60,20 @@ que les identifiants ci-dessous ne sont pas renseignés.
 
 ### 1. Dossier Drive partagé "Pack Démarrage"
 
-1. Dans le Drive de farmer-crossfit.com, crée (ou réutilise) le dossier qui
-   contiendra les PDF et vidéos du Pack Démarrage.
-2. Récupère son ID dans l'URL : `https://drive.google.com/drive/folders/<ID>`.
-3. Mets cet ID dans `GOOGLE_DRIVE_FOLDER_ID`.
+Le dossier existe déjà : `GOOGLE_DRIVE_FOLDER_ID=0ALsiJv35h0HyUk9PVA`
+(https://drive.google.com/drive/folders/0ALsiJv35h0HyUk9PVA), déjà rempli
+dans `.env.example`. Il contient les PDF (CookBooks, ebooks Nutripure...)
+à la racine et les vidéos dans un sous-dossier ("Vidéos apprentissage des
+mouvements") — `lib/drive.ts` parcourt automatiquement les sous-dossiers
+(jusqu'à 3 niveaux), donc il suffit d'y déposer/organiser les fichiers,
+aucune configuration supplémentaire n'est nécessaire pour en ajouter.
+
+Important : son ID commence par `0A`, ce qui signifie qu'il s'agit en
+réalité de la racine d'un **Drive partagé** (Shared Drive), pas d'un
+simple dossier — voir l'étape 2 ci-dessous, le partage fonctionne
+différemment dans ce cas. Pour utiliser un autre dossier, récupère son ID
+dans l'URL (`https://drive.google.com/drive/folders/<ID>`) et remplace
+`GOOGLE_DRIVE_FOLDER_ID`.
 
 ### 2. Compte de service (accès en lecture à ce dossier)
 
@@ -76,10 +86,19 @@ que les identifiants ci-dessous ne sont pas renseignés.
    `GOOGLE_SERVICE_ACCOUNT_EMAIL` et `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`
    (garder les `\n` tels quels, ou les remplacer par de vrais retours à la
    ligne).
-5. **Partage le dossier Drive** (étape 1) avec l'adresse
-   `GOOGLE_SERVICE_ACCOUNT_EMAIL`, en lecteur. C'est cette étape qui donne
-   à l'application l'accès au dossier — sans elle, la liste de fichiers
-   renverra une erreur.
+5. **Donne l'accès au compte de service :**
+   - Si `GOOGLE_DRIVE_FOLDER_ID` est un **Drive partagé** (ID commençant
+     par `0A`, comme celui fourni par défaut) : ouvre le Drive partagé
+     dans l'interface Google Drive → **Gérer les membres** → ajoute
+     l'adresse `GOOGLE_SERVICE_ACCOUNT_EMAIL` avec le rôle **Lecteur** (ou
+     Gestionnaire de contenu si le compte doit aussi lister les
+     sous-dossiers ajoutés après coup — Lecteur suffit en général). Le
+     partage classique d'un simple fichier/dossier ne fonctionne **pas**
+     pour un Drive partagé : il faut passer par la gestion des membres.
+   - Si c'est un dossier classique (ID ne commençant pas par `0A`) :
+     partage-le simplement avec `GOOGLE_SERVICE_ACCOUNT_EMAIL`, en
+     lecteur.
+   Sans cette étape, la liste de fichiers renverra une erreur.
 
 ### 3. Envoi d'emails
 
