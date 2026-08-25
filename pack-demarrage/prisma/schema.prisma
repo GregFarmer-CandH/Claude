@@ -1,0 +1,101 @@
+// Pack Démarrage - schéma de données
+//
+// Dev: SQLite (fichier local, zéro dépendance).
+// Prod: remplacer le provider par "postgresql" et pointer DATABASE_URL
+// vers une base managée (Supabase, Neon, Cloud SQL...). Le schéma ci-dessous
+// est compatible tel quel avec Postgres.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Intervenant {
+  OSTEOPATHE
+  DIETETICIENNE
+  MASSAGE_SPORT
+}
+
+enum AccessStatus {
+  ACTIVE
+  EXPIRING_SOON
+  EXPIRED
+  DISABLED
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+
+  clientsCreated Client[] @relation("CreatedBy")
+}
+
+model Client {
+  id        String @id @default(cuid())
+  firstName String
+  lastName  String
+  phone     String
+  email     String @unique
+
+  // Inscription et fenêtre d'accès à la plateforme (3 mois par défaut)
+  registeredAt  DateTime @default(now())
+  accessEndsAt  DateTime
+
+  // Statut d'accès. DISABLED = coupure manuelle par l'admin (prioritaire
+  // sur les dates). Le statut ACTIVE/EXPIRING_SOON/EXPIRED est sinon
+  // recalculé à la volée à partir de accessEndsAt (voir lib/access.ts) ;
+  // ce champ ne stocke que l'état "manuel".
+  manuallyDisabledAt DateTime?
+
+  // Suivi des relances automatiques pour éviter les doublons d'email
+  reminderSentAt DateTime?
+  expiredEmailSentAt DateTime?
+
+  // RGPD : consentement explicite recueilli à l'inscription
+  consentGivenAt   DateTime
+  consentTextSnapshot String
+
+  notes String?
+
+  createdByAdminId String?
+  createdByAdmin   AdminUser? @relation("CreatedBy", fields: [createdByAdminId], references: [id])
+
+  magicLinkTokens      MagicLinkToken[]
+  intervenantSelections IntervenantSelection[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([accessEndsAt])
+}
+
+model MagicLinkToken {
+  id        String   @id @default(cuid())
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([clientId])
+}
+
+model IntervenantSelection {
+  id           String      @id @default(cuid())
+  clientId     String
+  client       Client      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  intervenant  Intervenant
+  selectedAt   DateTime    @default(now())
+  notifiedAt   DateTime?
+  notifyError  String?
+
+  @@index([clientId])
+}
