@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Photo à mettre">
+	<rect width="800" height="600" fill="#f3e9ee"/>
+	<rect x="8" y="8" width="784" height="584" fill="none" stroke="#e8166a" stroke-width="4" stroke-dasharray="14 10"/>
+	<g transform="translate(400,255)" fill="#c4105a">
+		<rect x="-70" y="-45" width="140" height="100" rx="10" fill="none" stroke="#c4105a" stroke-width="8"/>
+		<circle cx="0" cy="8" r="32" fill="none" stroke="#c4105a" stroke-width="8"/>
+		<rect x="-24" y="-66" width="48" height="24" rx="6" fill="#c4105a"/>
+	</g>
+	<text x="400" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#c4105a">PHOTO À METTRE</text>
+</svg>

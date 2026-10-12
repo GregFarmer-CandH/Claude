@@ -1,0 +1,425 @@
+/*
+Theme Name: Farmer CrossFit
+Theme URI: https://farmer-crossfit.com
+Author: Farmer CrossFit
+Description: Thème sur-mesure pour farmer-crossfit.com — reprend l'architecture du site unitywolvesgang.fr, adaptée à Farmer CrossFit (Plaisir). Toutes les photos sont gérées depuis le Personnaliseur (Apparence > Personnaliser), sans code.
+Version: 1.0.0
+Requires at least: 6.0
+Requires PHP: 7.4
+Text Domain: farmer-crossfit
+*/
+
+/* ==========================================================================
+   Tokens
+   ========================================================================== */
+:root {
+	--fc-pink: #e8166a;
+	--fc-pink-dark: #c4105a;
+	--fc-dark: #15171c;
+	--fc-dark-soft: #1f222a;
+	--fc-light: #f6f6f8;
+	--fc-white: #ffffff;
+	--fc-text: #1c1e24;
+	--fc-text-muted: #6b6f7a;
+	--fc-border: #e3e4e8;
+	--fc-radius: 14px;
+	--fc-radius-pill: 999px;
+	--fc-shadow: 0 10px 30px rgba(21, 23, 28, 0.08);
+	--fc-container: 1180px;
+	--fc-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ==========================================================================
+   Reset & base
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+	margin: 0;
+	font-family: var(--fc-font);
+	color: var(--fc-text);
+	background: var(--fc-white);
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+ul { margin: 0; padding: 0; list-style: none; }
+h1, h2, h3, h4 { margin: 0 0 0.5em; line-height: 1.2; font-weight: 800; }
+p { margin: 0 0 1em; }
+.fc-container {
+	max-width: var(--fc-container);
+	margin: 0 auto;
+	padding: 0 20px;
+}
+.fc-visually-hidden {
+	position: absolute !important;
+	width: 1px; height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.fc-btn {
+	display: inline-block;
+	padding: 14px 30px;
+	border-radius: var(--fc-radius-pill);
+	font-weight: 700;
+	font-size: 0.95rem;
+	letter-spacing: 0.02em;
+	border: 2px solid transparent;
+	cursor: pointer;
+	transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+.fc-btn:hover { transform: translateY(-1px); }
+.fc-btn--pink { background: var(--fc-pink); color: var(--fc-white); }
+.fc-btn--pink:hover { background: var(--fc-pink-dark); }
+.fc-btn--outline { background: transparent; color: var(--fc-white); border-color: var(--fc-white); }
+.fc-btn--outline:hover { background: var(--fc-white); color: var(--fc-dark); }
+.fc-btn--dark { background: var(--fc-dark); color: var(--fc-white); }
+.fc-btn--block { display: block; width: 100%; text-align: center; }
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+.fc-header {
+	position: sticky;
+	top: 0;
+	z-index: 50;
+	background: var(--fc-white);
+	border-bottom: 1px solid var(--fc-border);
+}
+.fc-header__bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	padding: 14px 0;
+}
+.fc-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; }
+.fc-logo img { height: 44px; width: auto; }
+.fc-nav__menu { display: flex; align-items: center; gap: 28px; }
+.fc-nav__menu a { font-weight: 600; font-size: 0.95rem; }
+.fc-nav__menu a:hover { color: var(--fc-pink); }
+.fc-header__cta { display: flex; align-items: center; }
+.fc-nav-toggle {
+	display: none;
+	background: none;
+	border: none;
+	font-size: 1.6rem;
+	cursor: pointer;
+}
+
+/* Minimal header/footer for the Google Ads landing page */
+.fc-header--minimal { position: static; }
+.fc-header--minimal .fc-header__bar { justify-content: center; }
+.fc-footer--minimal {
+	background: var(--fc-dark);
+	color: var(--fc-white);
+	padding: 28px 0;
+	text-align: center;
+	font-size: 0.85rem;
+}
+.fc-footer--minimal a { text-decoration: underline; }
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.fc-hero {
+	position: relative;
+	min-height: 560px;
+	display: flex;
+	align-items: center;
+	color: var(--fc-white);
+	background: var(--fc-dark);
+	overflow: hidden;
+}
+.fc-hero .fc-photo {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+.fc-hero .fc-photo img { width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+.fc-hero::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(180deg, rgba(21,23,28,0.55) 0%, rgba(21,23,28,0.8) 100%);
+}
+.fc-hero__content { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; text-align: center; padding: 80px 20px; }
+.fc-hero__title { font-size: clamp(2rem, 4vw, 3rem); }
+.fc-hero__subtitle { font-size: 1.05rem; opacity: 0.92; margin-bottom: 1.8em; }
+.fc-hero--compact { min-height: 360px; }
+
+/* ==========================================================================
+   Sections
+   ========================================================================== */
+.fc-section { padding: 72px 0; }
+.fc-section--light { background: var(--fc-white); }
+.fc-section--muted { background: var(--fc-light); }
+.fc-section--dark { background: var(--fc-dark); color: var(--fc-white); }
+.fc-section__header { text-align: center; max-width: 640px; margin: 0 auto 44px; }
+.fc-section__title { font-size: clamp(1.5rem, 3vw, 2.1rem); }
+.fc-section--dark .fc-section__title { color: var(--fc-white); }
+.fc-section__intro { color: var(--fc-text-muted); }
+.fc-section--dark .fc-section__intro { color: rgba(255,255,255,0.7); }
+.fc-section__footer { text-align: center; margin-top: 44px; }
+
+/* ==========================================================================
+   Steps (Comment commencer)
+   ========================================================================== */
+.fc-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; text-align: center; }
+.fc-steps__number {
+	width: 48px; height: 48px;
+	display: flex; align-items: center; justify-content: center;
+	margin: 0 auto 16px;
+	border-radius: 50%;
+	background: var(--fc-pink);
+	color: var(--fc-white);
+	font-weight: 800;
+}
+.fc-steps__title { font-weight: 700; margin-bottom: 0.3em; }
+
+/* ==========================================================================
+   Checklist (On sait ce qui vous retient)
+   ========================================================================== */
+.fc-checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 32px; margin-bottom: 28px; }
+.fc-checklist__item { display: flex; gap: 10px; align-items: flex-start; }
+.fc-checklist__item::before {
+	content: "✓";
+	flex: none;
+	width: 22px; height: 22px;
+	display: flex; align-items: center; justify-content: center;
+	border-radius: 50%;
+	background: rgba(232,22,106,0.12);
+	color: var(--fc-pink);
+	font-size: 0.8rem;
+	font-weight: 800;
+}
+
+/* ==========================================================================
+   About split block (photo + text)
+   ========================================================================== */
+.fc-split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.fc-split__photo .fc-photo { border-radius: var(--fc-radius); overflow: hidden; box-shadow: var(--fc-shadow); }
+.fc-split__photo img { width: 100%; aspect-ratio: 4/5; object-fit: cover; }
+.fc-split--reverse { direction: rtl; }
+.fc-split--reverse > * { direction: ltr; }
+
+/* ==========================================================================
+   Program cards
+   ========================================================================== */
+.fc-programs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+.fc-program-card {
+	background: var(--fc-white);
+	border: 1px solid var(--fc-border);
+	border-radius: var(--fc-radius);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.fc-program-card:hover { box-shadow: var(--fc-shadow); transform: translateY(-2px); }
+.fc-program-card__photo img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+.fc-program-card__body { padding: 20px 22px 24px; display: flex; flex-direction: column; flex: 1; }
+.fc-program-card__title { font-size: 1.15rem; margin-bottom: 0.4em; }
+.fc-program-card__text { color: var(--fc-text-muted); font-size: 0.92rem; flex: 1; }
+.fc-program-card__link { margin-top: 16px; color: var(--fc-pink); font-weight: 700; font-size: 0.9rem; }
+.fc-program-card__link:hover { text-decoration: underline; }
+
+/* ==========================================================================
+   Team
+   ========================================================================== */
+.fc-team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; text-align: center; }
+.fc-team-card__photo { width: 140px; height: 140px; margin: 0 auto 14px; border-radius: 50%; overflow: hidden; box-shadow: var(--fc-shadow); }
+.fc-team-card__photo .fc-photo, .fc-team-card__photo img { width: 100%; height: 100%; object-fit: cover; }
+.fc-team-card__name { font-weight: 800; }
+.fc-team-card__role { color: var(--fc-text-muted); font-size: 0.9rem; }
+
+/* ==========================================================================
+   Testimonials
+   ========================================================================== */
+.fc-testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.fc-testimonial-card {
+	background: var(--fc-white);
+	border: 1px solid var(--fc-border);
+	border-radius: var(--fc-radius);
+	padding: 26px 24px;
+}
+.fc-section--dark .fc-testimonial-card { background: var(--fc-dark-soft); border-color: rgba(255,255,255,0.1); }
+.fc-testimonial-card__stars { color: var(--fc-pink); margin-bottom: 10px; letter-spacing: 2px; }
+.fc-testimonial-card__text { font-style: italic; margin-bottom: 14px; }
+.fc-testimonial-card__author { font-weight: 800; font-size: 0.9rem; }
+.fc-testimonial-card__meta { color: var(--fc-text-muted); font-size: 0.82rem; }
+.fc-section--dark .fc-testimonial-card__meta { color: rgba(255,255,255,0.6); }
+
+/* ==========================================================================
+   FAQ
+   ========================================================================== */
+.fc-faq { max-width: 760px; margin: 0 auto; }
+.fc-faq__item {
+	border-bottom: 1px solid var(--fc-border);
+	padding: 18px 0;
+}
+.fc-faq__item summary {
+	cursor: pointer;
+	font-weight: 700;
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+}
+.fc-faq__item summary::-webkit-details-marker { display: none; }
+.fc-faq__item summary::after { content: "+"; font-size: 1.4rem; color: var(--fc-pink); flex: none; }
+.fc-faq__item[open] summary::after { content: "–"; }
+.fc-faq__item p { margin-top: 12px; color: var(--fc-text-muted); }
+
+/* ==========================================================================
+   Lead magnet banner
+   ========================================================================== */
+.fc-leadmagnet {
+	background: var(--fc-pink);
+	color: var(--fc-white);
+	padding: 64px 0;
+}
+.fc-leadmagnet .fc-container { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.fc-leadmagnet__title { font-size: clamp(1.4rem, 3vw, 1.9rem); }
+.fc-leadmagnet__form { background: var(--fc-white); border-radius: var(--fc-radius); padding: 28px; box-shadow: var(--fc-shadow); }
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+.fc-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fc-form__field { margin-bottom: 14px; }
+.fc-form__field label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--fc-text); margin-bottom: 6px; }
+.fc-leadmagnet .fc-form__field label { color: var(--fc-text); }
+.fc-form__field input[type="text"],
+.fc-form__field input[type="email"],
+.fc-form__field input[type="tel"] {
+	width: 100%;
+	padding: 12px 14px;
+	border: 1px solid var(--fc-border);
+	border-radius: 8px;
+	font-family: inherit;
+	font-size: 0.95rem;
+}
+.fc-form__consent { display: flex; gap: 8px; align-items: flex-start; font-size: 0.82rem; color: var(--fc-text-muted); margin-bottom: 16px; }
+.fc-form__consent input { margin-top: 3px; }
+.fc-form__consent a { text-decoration: underline; }
+.fc-form__note { font-size: 0.78rem; color: var(--fc-text-muted); text-align: center; margin-top: 12px; }
+.fc-form__success { background: rgba(46, 170, 90, 0.12); color: #1d7a3d; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; font-weight: 600; }
+.fc-form__error { background: rgba(224, 49, 49, 0.1); color: #b42318; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; font-weight: 600; }
+
+/* ==========================================================================
+   Reassurances
+   ========================================================================== */
+.fc-reassurances { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; text-align: center; margin-top: 48px; }
+.fc-reassurance__icon {
+	width: 46px; height: 46px; margin: 0 auto 10px;
+	border-radius: 50%;
+	background: rgba(232,22,106,0.12);
+	color: var(--fc-pink);
+	display: flex; align-items: center; justify-content: center;
+	font-weight: 800;
+}
+.fc-reassurance__title { font-weight: 700; margin-bottom: 0.2em; }
+.fc-reassurance__text { color: var(--fc-text-muted); font-size: 0.88rem; }
+
+/* ==========================================================================
+   Location
+   ========================================================================== */
+.fc-location__photo .fc-photo { border-radius: var(--fc-radius); overflow: hidden; }
+.fc-location__photo img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+.fc-location__address { font-weight: 600; margin-bottom: 18px; }
+
+/* ==========================================================================
+   Final CTA
+   ========================================================================== */
+.fc-cta-final { text-align: center; }
+
+/* ==========================================================================
+   Hours
+   ========================================================================== */
+.fc-hours { white-space: pre-line; }
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.fc-footer { background: var(--fc-dark); color: rgba(255,255,255,0.85); padding: 64px 0 28px; }
+.fc-footer__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 36px; margin-bottom: 40px; }
+.fc-footer h4 { color: var(--fc-white); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 16px; }
+.fc-footer__col p, .fc-footer__col li { font-size: 0.9rem; margin-bottom: 8px; }
+.fc-footer__col a:hover { color: var(--fc-pink); }
+.fc-footer__social { display: flex; gap: 12px; margin-top: 16px; }
+.fc-footer__social a {
+	width: 36px; height: 36px;
+	border-radius: 50%;
+	background: rgba(255,255,255,0.08);
+	display: flex; align-items: center; justify-content: center;
+}
+.fc-footer__social a:hover { background: var(--fc-pink); }
+.fc-footer__bottom {
+	border-top: 1px solid rgba(255,255,255,0.1);
+	padding-top: 22px;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 10px;
+	font-size: 0.8rem;
+	color: rgba(255,255,255,0.55);
+}
+
+/* ==========================================================================
+   Photo placeholder (fc_photo() default state)
+   ========================================================================== */
+.fc-photo { position: relative; display: block; background: var(--fc-light); }
+.fc-photo--placeholder {
+	outline: 2px dashed rgba(232,22,106,0.5);
+	outline-offset: -2px;
+}
+.fc-photo--placeholder::after {
+	content: attr(data-photo-label);
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 10px;
+	font-size: 0.78rem;
+	font-weight: 700;
+	color: var(--fc-pink-dark);
+	background: rgba(255,255,255,0.75);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 960px) {
+	.fc-programs-grid, .fc-team-grid, .fc-testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+	.fc-footer__grid { grid-template-columns: 1fr 1fr; }
+	.fc-split { grid-template-columns: 1fr; }
+	.fc-leadmagnet .fc-container { grid-template-columns: 1fr; }
+}
+@media (max-width: 680px) {
+	.fc-nav__menu { display: none; }
+	.fc-nav-toggle { display: block; }
+	.fc-header.is-open .fc-nav__menu {
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		top: 100%; left: 0; right: 0;
+		background: var(--fc-white);
+		padding: 16px 20px;
+		border-bottom: 1px solid var(--fc-border);
+		gap: 16px;
+	}
+	.fc-steps, .fc-checklist, .fc-reassurances, .fc-programs-grid, .fc-team-grid, .fc-testimonials-grid { grid-template-columns: 1fr; }
+	.fc-footer__grid { grid-template-columns: 1fr; }
+	.fc-form__row { grid-template-columns: 1fr; }
+}
