@@ -99,6 +99,7 @@ function fc_photo_slots() {
 		'prog_halterophilie'    => array( 'Programme — Haltérophilie', '', 'fc_section_photos_programmes' ),
 		'prog_conditioning'     => array( 'Programme — Conditioning', '', 'fc_section_photos_programmes' ),
 		'prog_opengym'          => array( 'Programme — Open Gym', '', 'fc_section_photos_programmes' ),
+		'prog_yogapilates'      => array( 'Programme — Yoga - Pilates', '', 'fc_section_photos_programmes' ),
 		'prog_gymnastique'      => array( 'Programme — Gymnastique', '', 'fc_section_photos_programmes' ),
 		'prog_personaltraining' => array( 'Programme — Personal Training', '', 'fc_section_photos_programmes' ),
 		'prog_nutrition'        => array( 'Programme — Accompagnement Nutrition', '', 'fc_section_photos_programmes' ),
@@ -286,6 +287,10 @@ function fc_programs() {
 		'opengym'          => array(
 			'title' => 'Open Gym',
 			'text'  => 'La salle en accès libre pour faire son entraînement, renforcement ou cardio, avec tout le matériel.',
+		),
+		'yogapilates'      => array(
+			'title' => 'Yoga - Pilates',
+			'text'  => 'Respiration, étirements et renforcement profond : un temps pour soi entre deux séances de CrossFit.',
 		),
 		'gymnastique'      => array(
 			'title' => 'Gymnastique',
