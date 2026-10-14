@@ -97,7 +97,6 @@ function fc_photo_slots() {
 		'prog_crossfit'         => array( 'Programme — CrossFit', '', 'fc_section_photos_programmes' ),
 		'prog_hyrox'            => array( 'Programme — HYROX', '', 'fc_section_photos_programmes' ),
 		'prog_halterophilie'    => array( 'Programme — Haltérophilie', '', 'fc_section_photos_programmes' ),
-		'prog_conditioning'     => array( 'Programme — Conditioning', '', 'fc_section_photos_programmes' ),
 		'prog_opengym'          => array( 'Programme — Open Gym', '', 'fc_section_photos_programmes' ),
 		'prog_yogapilates'      => array( 'Programme — Yoga - Pilates', '', 'fc_section_photos_programmes' ),
 		'prog_gymnastique'      => array( 'Programme — Gymnastique', '', 'fc_section_photos_programmes' ),
@@ -279,10 +278,6 @@ function fc_programs() {
 		'halterophilie'    => array(
 			'title' => 'Haltérophilie',
 			'text'  => 'Arraché et épaulé-jeté : apprends la technique olympique, pas à pas, avec un coach.',
-		),
-		'conditioning'     => array(
-			'title' => 'Conditioning',
-			'text'  => 'Cardio et renforcement sans barre : rameur, vélo, ski erg, poids de corps. Accessible à tous.',
 		),
 		'opengym'          => array(
 			'title' => 'Open Gym',
